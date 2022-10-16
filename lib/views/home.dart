@@ -20,59 +20,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late String location = '';
-  final NewCategoryState _categoryStateController = Get.put(NewCategoryState());
-  final ArticleState _articleStateController = Get.put(ArticleState());
 
-  final _numberOfArticlePerRequest = 5;
-  final PagingController<int, ArticleModel> _pagingController =
-      PagingController(firstPageKey: 1);
-
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      final response = await getTopHeadLines(_articleStateController.searchController);
-      late List<ArticleModel> relatedArticles = [];
-      response['data']['articles'].forEach((element) {
-        String author = element['author'] ?? 'Unknown';
-        String title = element['title'] ?? '';
-        String description = element['description'] ?? '';
-        String url = element['url'] ?? '';
-        String urlToImage = element['urlToImage'] ?? '';
-        String content = element['content'] ?? '';
-        relatedArticles.add(ArticleModel(
-            author: author,
-            title: title,
-            description: description,
-            url: url,
-            urlToImage: urlToImage,
-            content: content));
-      });
-
-      final isLastPage = relatedArticles.length < _numberOfArticlePerRequest;
-
-      if (isLastPage) {
-        _pagingController.appendLastPage(relatedArticles);
-      } else {
-        final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(relatedArticles, nextPageKey);
-      }
-    } catch (e) {
-      print("error --> $e");
-      _pagingController.error = e;
-    }
-  }
+    final NewsCategoryState _categoryStateController = Get.put(NewsCategoryState());
+    final ArticleState _articleStateController = Get.put(ArticleState());
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+    _articleStateController.pagingController.addPageRequestListener((pageKey) {
+      _articleStateController.fetchPage(pageKey,_categoryStateController.categoryName);
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    _articleStateController.pagingController.dispose();
     super.dispose();
   }
 
@@ -95,7 +57,7 @@ class _HomeState extends State<Home> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              GetBuilder<NewCategoryState>(builder: (_) {
+              GetBuilder<NewsCategoryState>(builder: (_) {
                 return Container(
                   alignment: Alignment.center,
                   height: 65,
@@ -105,79 +67,98 @@ class _HomeState extends State<Home> {
                       shrinkWrap: true,
                       itemCount: _categoryStateController.categories.length,
                       itemBuilder: (context, index) {
-                        return _categoryStateController.categories[index];
+                        return GestureDetector(
+                            onTap: () {
+                              _categoryStateController.changeCategory(index);
+                              ///TODO: filter is not working on change///
+                              _articleStateController.pagingController.addPageRequestListener((pageKey) {
+                                _articleStateController.fetchPage(pageKey,_categoryStateController.categoryName);
+                              });
+                            },
+                            child: _categoryStateController.categories[index]);
                       }),
                 );
               }),
               verticalSpacer,
-    GetBuilder<ArticleState>(builder: (_) {
-    return Column(children: [
-             TextFormField(
-               onChanged: _articleStateController.changeLocation(_articleStateController.controller.text),
-                controller: _articleStateController.controller,
-               decoration: InputDecoration(
-                 filled: true,
-                 fillColor: white,
-                 contentPadding: const EdgeInsets.all(16),
-                 hintText: 'Search by country code',
-                 hintStyle: GoogleFonts.roboto(
-                     textStyle: const TextStyle(
-                         color: deepAssTextColor,
-                         fontSize: 16,
-                         fontWeight: FontWeight.w400)),
-                 suffixIcon: GestureDetector(
-                   onTap: (){
-                     _pagingController.addPageRequestListener((pageKey) {
-                       _fetchPage(pageKey);
-                     });
-                     // _pagingController.refresh();
-                   },
-                   child: Container(
-                     width: 40,
-                     decoration: const BoxDecoration(
-                         color: primaryColor,
-                         borderRadius: BorderRadius.only(
-                           topRight: Radius.circular(10),
-                           bottomRight: Radius.circular(10),
-                         )),
-                     child: const Icon(Icons.search,color: white,),
-                   ),
-                 ),
-                 focusedBorder: OutlineInputBorder(
-                   borderRadius: BorderRadius.circular(10.0),
-                   borderSide: const BorderSide(color: deepAss),
-                 ),
-                 enabledBorder: OutlineInputBorder(
-                   borderRadius: BorderRadius.circular(10.0),
-                   borderSide: const BorderSide(color: deepAss),
-                 ),
-                 focusColor: primaryColor,
-               ),
-             ),
-             verticalSpacer,
-             Container(
-               height: MediaQuery.of(context).size.height - 100,
-               child: RefreshIndicator(
-                 onRefresh: () =>
-                     Future.sync(() => _pagingController.refresh()),
-                 child: PagedListView<int, ArticleModel>.separated(
-                   pagingController: _pagingController,
-                   separatorBuilder: (context, index) => const SizedBox(
-                     height: 16,
-                   ),
-                   builderDelegate: PagedChildBuilderDelegate<ArticleModel>(
-                       itemBuilder: (context, item, index) => BlogTile(
-                         onTap: () {
-                           Get.to(() => NewsDetails(newsUrl: item.url!));
-                         },
-                         title: item.title,
-                         imageUrl: item.urlToImage,
-                         description: item.description,
-                       )),
-                 ),
-               ),
-             )
-           ],);}),
+              GetBuilder<ArticleState>(builder: (_) {
+                return Column(
+                  children: [
+                    TextFormField(
+                      onChanged: _articleStateController.changeLocation(
+                          _articleStateController.controller.text),
+                      controller: _articleStateController.controller,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: white,
+                        contentPadding: const EdgeInsets.all(16),
+                        hintText: 'Search by country code',
+                        hintStyle: GoogleFonts.roboto(
+                            textStyle: const TextStyle(
+                                color: deepAssTextColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400)),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            ///TODO: filter is not working on change///
+                            _articleStateController.pagingController.addPageRequestListener((pageKey) {
+                              _articleStateController.fetchPage(pageKey,_categoryStateController.categoryName);
+                            });
+                            // _pagingController.refresh();
+                          },
+                          child: Container(
+                            width: 40,
+                            decoration: const BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                )),
+                            child: const Icon(
+                              Icons.search,
+                              color: white,
+                            ),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: deepAss),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: deepAss),
+                        ),
+                        focusColor: primaryColor,
+                      ),
+                    ),
+                    verticalSpacer,
+                    Container(
+                      height: MediaQuery.of(context).size.height - 100,
+                      child: RefreshIndicator(
+                        onRefresh: () =>
+                            Future.sync(() => _articleStateController.pagingController.refresh()),
+                        child: PagedListView<int, ArticleModel>.separated(
+                          pagingController: _articleStateController.pagingController,
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 32,
+                          ),
+                          builderDelegate:
+                              PagedChildBuilderDelegate<ArticleModel>(
+                                  itemBuilder: (context, item, index) =>
+                                      BlogTile(
+                                        onTap: () {
+                                          Get.to(() =>
+                                              NewsDetails(newsUrl: item.url!));
+                                        },
+                                        title: item.title,
+                                        imageUrl: item.urlToImage,
+                                        description: item.description,
+                                      )),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              }),
             ],
           ),
         ),

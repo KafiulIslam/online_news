@@ -47,6 +47,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                 textStyle: const TextStyle(color: white,fontSize: 20,fontWeight: FontWeight.w800)),
           ),
         ),
+        ///TODO: Circular indicator will be implemented///
         body: isLoading == true ? const Center(child: CircularProgressIndicator()) :
         WebView(
           javascriptMode: JavascriptMode.unrestricted,
@@ -57,6 +58,7 @@ class _NewsDetailsState extends State<NewsDetails> {
           },
           onProgress: (int progress) {},
           onPageStarted: (String url) {
+             ///TODO: header and footer will be removed///
             _webViewController.runJavascript(
                 "document.getElementsByTagName('header')[0].style.display='none'");
             _webViewController.runJavascript(
