@@ -7,7 +7,7 @@ import 'package:online_news_app/controller/state/article_state.dart';
 import 'package:online_news_app/controller/state/category_state.dart';
 import 'package:online_news_app/model/article_model.dart';
 import 'package:online_news_app/views/news_details.dart';
-import 'package:online_news_app/widgets/blog_tile.dart';
+import 'package:online_news_app/views/widgets/blog_tile.dart';
 import '../controller/api/news_api.dart';
 import '../controller/constant/color.dart';
 import '../controller/constant/constant_widget.dart';
@@ -70,10 +70,7 @@ class _HomeState extends State<Home> {
                         return GestureDetector(
                             onTap: () {
                               _categoryStateController.changeCategory(index);
-                              ///TODO: filter is not working on change///
-                              _articleStateController.pagingController.addPageRequestListener((pageKey) {
-                                _articleStateController.fetchPage(pageKey,_categoryStateController.categoryName);
-                              });
+                              _articleStateController.pagingController.refresh();
                             },
                             child: _categoryStateController.categories[index]);
                       }),
@@ -99,11 +96,8 @@ class _HomeState extends State<Home> {
                                 fontWeight: FontWeight.w400)),
                         suffixIcon: GestureDetector(
                           onTap: () {
-                            ///TODO: filter is not working on change///
-                            _articleStateController.pagingController.addPageRequestListener((pageKey) {
-                              _articleStateController.fetchPage(pageKey,_categoryStateController.categoryName);
-                            });
-                            // _pagingController.refresh();
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            _articleStateController.pagingController.refresh();
                           },
                           child: Container(
                             width: 40,

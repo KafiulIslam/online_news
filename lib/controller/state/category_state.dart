@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
-import '../../widgets/category_tile.dart';
+import '../../views/widgets/category_tile.dart';
 import '../constant/image_path.dart';
 
 class NewsCategoryState extends GetxController{
@@ -63,13 +61,5 @@ class NewsCategoryState extends GetxController{
         categoryName: 'Technology',
         imageUrl: technology),
   ];
-
-  bool isLoading = false;
-  void getCircular (){
-    isLoading = true;
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      isLoading = false;
-    });
-  }
 
 }
