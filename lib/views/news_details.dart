@@ -64,10 +64,10 @@ class _NewsDetailsState extends State<NewsDetails> {
                 setState(() {
                   _isLoading = false;
                 });
-                _webViewController.runJavascript(
-                    "document.getElementsByTagName('header')[0].style.display='none'");
-                _webViewController.runJavascript(
-                    "document.getElementsByTagName('footer')[0].style.display='none'");
+                // _webViewController.runJavascript(
+                //     "document.getElementsByTagName('header')[0].style.display='none'");
+                // _webViewController.runJavascript(
+                //     "document.getElementsByTagName('footer')[0].style.display='none'");
                 // _webViewController
                 //     .runJavascript(
                 //     ("javascript:(function() { " +

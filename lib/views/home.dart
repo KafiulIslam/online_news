@@ -1,3 +1,5 @@
+import 'package:country_picker/country_picker.dart';
+import 'package:emoji_flag_converter/emoji_flag_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -20,14 +22,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final NewsCategoryState _categoryStateController =
+      Get.put(NewsCategoryState());
+  final ArticleState _articleStateController = Get.put(ArticleState());
 
-    final NewsCategoryState _categoryStateController = Get.put(NewsCategoryState());
-    final ArticleState _articleStateController = Get.put(ArticleState());
+  var imogi;
 
   @override
   void initState() {
     _articleStateController.pagingController.addPageRequestListener((pageKey) {
-      _articleStateController.fetchPage(pageKey,_categoryStateController.categoryName);
+      _articleStateController.fetchPage(
+          pageKey, _categoryStateController.categoryName);
     });
     super.initState();
   }
@@ -70,7 +75,8 @@ class _HomeState extends State<Home> {
                         return GestureDetector(
                             onTap: () {
                               _categoryStateController.changeCategory(index);
-                              _articleStateController.pagingController.refresh();
+                              _articleStateController.pagingController
+                                  .refresh();
                             },
                             child: _categoryStateController.categories[index]);
                       }),
@@ -80,58 +86,59 @@ class _HomeState extends State<Home> {
               GetBuilder<ArticleState>(builder: (_) {
                 return Column(
                   children: [
-                    TextFormField(
-                      onChanged: _articleStateController.changeLocation(
-                          _articleStateController.controller.text),
-                      controller: _articleStateController.controller,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: white,
-                        contentPadding: const EdgeInsets.all(16),
-                        hintText: 'Search by country code',
-                        hintStyle: GoogleFonts.roboto(
-                            textStyle: const TextStyle(
-                                color: deepAssTextColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400)),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            _articleStateController.pagingController.refresh();
-                          },
-                          child: Container(
-                            width: 40,
-                            decoration: const BoxDecoration(
-                                color: primaryColor,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                )),
-                            child: const Icon(
-                              Icons.search,
-                              color: white,
-                            ),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: deepAss),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: deepAss),
-                        ),
-                        focusColor: primaryColor,
-                      ),
-                    ),
-                    verticalSpacer,
+                    // TextFormField(
+                    //   onChanged: _articleStateController.changeLocation(
+                    //       _articleStateController.controller.text),
+                    //   controller: _articleStateController.controller,
+                    //   decoration: InputDecoration(
+                    //     filled: true,
+                    //     fillColor: white,
+                    //     contentPadding: const EdgeInsets.all(16),
+                    //     hintText: 'Search by country code',
+                    //     hintStyle: GoogleFonts.roboto(
+                    //         textStyle: const TextStyle(
+                    //             color: deepAssTextColor,
+                    //             fontSize: 16,
+                    //             fontWeight: FontWeight.w400)),
+                    //     suffixIcon: GestureDetector(
+                    //       onTap: () {
+                    //         FocusManager.instance.primaryFocus?.unfocus();
+                    //         _articleStateController.pagingController.refresh();
+                    //       },
+                    //       child: Container(
+                    //         width: 40,
+                    //         decoration: const BoxDecoration(
+                    //             color: primaryColor,
+                    //             borderRadius: BorderRadius.only(
+                    //               topRight: Radius.circular(10),
+                    //               bottomRight: Radius.circular(10),
+                    //             )),
+                    //         child: const Icon(
+                    //           Icons.search,
+                    //           color: white,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(10.0),
+                    //       borderSide: const BorderSide(color: deepAss),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(10.0),
+                    //       borderSide: const BorderSide(color: deepAss),
+                    //     ),
+                    //     focusColor: primaryColor,
+                    //   ),
+                    // ),
+                    // verticalSpacer,
                     Container(
                       height: MediaQuery.of(context).size.height - 100,
                       child: RefreshIndicator(
-                        onRefresh: () =>
-                            Future.sync(() => _articleStateController.pagingController.refresh()),
+                        onRefresh: () => Future.sync(() =>
+                            _articleStateController.pagingController.refresh()),
                         child: PagedListView<int, ArticleModel>.separated(
-                          pagingController: _articleStateController.pagingController,
+                          pagingController:
+                              _articleStateController.pagingController,
                           separatorBuilder: (context, index) => const SizedBox(
                             height: 32,
                           ),
@@ -157,6 +164,32 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+      floatingActionButton: GetBuilder<ArticleState>(builder: (_) {
+        return SizedBox(
+          height: 35,
+          width: 60,
+          child: FloatingActionButton(
+            tooltip: 'Tap to change country',
+              shape: const BeveledRectangleBorder(
+                  borderRadius: BorderRadius.zero
+              ),
+              backgroundColor: white,
+              onPressed: () {
+                showCountryPicker(
+                  context: context,
+                  onSelect: (Country country) {
+                    _articleStateController.changeLocation(country.countryCode);
+                    _articleStateController.pagingController.refresh();
+                  },
+                );
+              },
+              child: Text(
+                EmojiConverter.fromAlpha2CountryCode(
+                    _articleStateController.searchController),
+                style: const TextStyle(fontSize: 25),
+              )),
+        );
+      }),
     );
   }
 }
