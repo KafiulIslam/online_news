@@ -10,7 +10,6 @@ import 'package:online_news_app/controller/state/category_state.dart';
 import 'package:online_news_app/model/article_model.dart';
 import 'package:online_news_app/views/news_details.dart';
 import 'package:online_news_app/views/widgets/blog_tile.dart';
-import '../controller/api/news_api.dart';
 import '../controller/constant/color.dart';
 import '../controller/constant/constant_widget.dart';
 
@@ -56,6 +55,22 @@ class _HomeState extends State<Home> {
               textStyle: const TextStyle(
                   color: white, fontSize: 20, fontWeight: FontWeight.w800)),
         ),
+        actions: [
+    GetBuilder<ArticleState>(builder: (_) {
+    return TextButton(onPressed: (){
+            showCountryPicker(
+              context: context,
+              onSelect: (Country country) {
+                _articleStateController.changeLocation(country.countryCode);
+                _articleStateController.pagingController.refresh();
+              },
+            );
+          }, child: Text(
+            EmojiConverter.fromAlpha2CountryCode(
+                _articleStateController.searchController),
+            style: const TextStyle(fontSize: 25),
+          ));})
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -84,112 +99,37 @@ class _HomeState extends State<Home> {
               }),
               verticalSpacer,
               GetBuilder<ArticleState>(builder: (_) {
-                return Column(
-                  children: [
-                    // TextFormField(
-                    //   onChanged: _articleStateController.changeLocation(
-                    //       _articleStateController.controller.text),
-                    //   controller: _articleStateController.controller,
-                    //   decoration: InputDecoration(
-                    //     filled: true,
-                    //     fillColor: white,
-                    //     contentPadding: const EdgeInsets.all(16),
-                    //     hintText: 'Search by country code',
-                    //     hintStyle: GoogleFonts.roboto(
-                    //         textStyle: const TextStyle(
-                    //             color: deepAssTextColor,
-                    //             fontSize: 16,
-                    //             fontWeight: FontWeight.w400)),
-                    //     suffixIcon: GestureDetector(
-                    //       onTap: () {
-                    //         FocusManager.instance.primaryFocus?.unfocus();
-                    //         _articleStateController.pagingController.refresh();
-                    //       },
-                    //       child: Container(
-                    //         width: 40,
-                    //         decoration: const BoxDecoration(
-                    //             color: primaryColor,
-                    //             borderRadius: BorderRadius.only(
-                    //               topRight: Radius.circular(10),
-                    //               bottomRight: Radius.circular(10),
-                    //             )),
-                    //         child: const Icon(
-                    //           Icons.search,
-                    //           color: white,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(10.0),
-                    //       borderSide: const BorderSide(color: deepAss),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(10.0),
-                    //       borderSide: const BorderSide(color: deepAss),
-                    //     ),
-                    //     focusColor: primaryColor,
-                    //   ),
-                    // ),
-                    // verticalSpacer,
-                    Container(
-                      height: MediaQuery.of(context).size.height - 100,
-                      child: RefreshIndicator(
-                        onRefresh: () => Future.sync(() =>
-                            _articleStateController.pagingController.refresh()),
-                        child: PagedListView<int, ArticleModel>.separated(
-                          pagingController:
-                              _articleStateController.pagingController,
-                          separatorBuilder: (context, index) => const SizedBox(
-                            height: 32,
-                          ),
-                          builderDelegate:
-                              PagedChildBuilderDelegate<ArticleModel>(
-                                  itemBuilder: (context, item, index) =>
-                                      BlogTile(
-                                        onTap: () {
-                                          Get.to(() =>
-                                              NewsDetails(newsUrl: item.url!));
-                                        },
-                                        title: item.title,
-                                        imageUrl: item.urlToImage,
-                                        description: item.description,
-                                      )),
-                        ),
+                return Container(
+                  height: MediaQuery.of(context).size.height - 100,
+                  child: RefreshIndicator(
+                    onRefresh: () => Future.sync(() =>
+                        _articleStateController.pagingController.refresh()),
+                    child: PagedListView<int, ArticleModel>.separated(
+                      pagingController:
+                          _articleStateController.pagingController,
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 32,
                       ),
-                    )
-                  ],
+                      builderDelegate:
+                          PagedChildBuilderDelegate<ArticleModel>(
+                              itemBuilder: (context, item, index) =>
+                                  BlogTile(
+                                    onTap: () {
+                                      Get.to(() =>
+                                          NewsDetails(newsUrl: item.url!));
+                                    },
+                                    title: item.title,
+                                    imageUrl: item.urlToImage,
+                                    description: item.description,
+                                  )),
+                    ),
+                  ),
                 );
               }),
             ],
           ),
         ),
       ),
-      floatingActionButton: GetBuilder<ArticleState>(builder: (_) {
-        return SizedBox(
-          height: 35,
-          width: 60,
-          child: FloatingActionButton(
-            tooltip: 'Tap to change country',
-              shape: const BeveledRectangleBorder(
-                  borderRadius: BorderRadius.zero
-              ),
-              backgroundColor: white,
-              onPressed: () {
-                showCountryPicker(
-                  context: context,
-                  onSelect: (Country country) {
-                    _articleStateController.changeLocation(country.countryCode);
-                    _articleStateController.pagingController.refresh();
-                  },
-                );
-              },
-              child: Text(
-                EmojiConverter.fromAlpha2CountryCode(
-                    _articleStateController.searchController),
-                style: const TextStyle(fontSize: 25),
-              )),
-        );
-      }),
     );
   }
 }
