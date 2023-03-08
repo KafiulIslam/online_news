@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../controller/constant/color.dart';
+import '../controller/constant/constant_widget.dart';
 
 
 class NewsDetails extends StatefulWidget {
@@ -31,23 +32,17 @@ class _NewsDetailsState extends State<NewsDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final heightRatio = MediaQuery.of(context).size.height;
-    final widthRatio = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: primaryColor,
+          backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
           elevation: 0.0,
           leading: IconButton(onPressed: (){
             Get.back();
           },icon: const Icon(Icons.arrow_back_ios,color: white,size: 22,),),
-          title: Text(
-            'News Today',
-            style: GoogleFonts.roboto(
-                textStyle: const TextStyle(color: white,fontSize: 20,fontWeight: FontWeight.w800)),
-          ),
+          title: appTitle,
         ),
          body: Stack(
           children: [
