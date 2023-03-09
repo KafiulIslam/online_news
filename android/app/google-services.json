@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "993586788044",
+    "project_id": "global-news-68fd9",
+    "storage_bucket": "global-news-68fd9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993586788044:android:9303b01a9a127364293469",
+        "android_client_info": {
+          "package_name": "com.kafi.globalnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993586788044-fa4ri46f1prnfb0bus107te09c2rli9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kafi.globalnews",
+            "certificate_hash": "cd8afbc9851561cb580f6eea26e2c848b72a17c9"
+          }
+        },
+        {
+          "client_id": "993586788044-h75d1v442qs3slh3q653ejbdf28dbdrg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhzRWLuaaP0zZAnKVqwXtBDcWYBubYNxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993586788044-h75d1v442qs3slh3q653ejbdf28dbdrg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
