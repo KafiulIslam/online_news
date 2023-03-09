@@ -43,6 +43,11 @@ dependencies:
   country_picker: ^2.0.16
   emoji_flag_converter: ^1.1.0
   flutter_zoom_drawer: ^3.0.3
+  share_plus: ^4.4.0
+  rename: ^2.1.1
+  rating_dialog: ^2.0.4
+  store_redirect: ^2.0.1
+  flutter_mailer: ^2.0.1
 
 
 dev_dependencies:

@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:online_news_app/controller/constant/image_path.dart';
+import 'package:online_news_app/controller/state/home_drawer_state.dart';
+import 'package:online_news_app/views/widgets/custom_snack.dart';
+import 'package:rating_dialog/rating_dialog.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:store_redirect/store_redirect.dart';
+import '../../controller/constant/color.dart';
 import 'home_widget/menu_tile.dart';
 
 class HomeDrawer extends StatefulWidget {
@@ -10,6 +20,8 @@ class HomeDrawer extends StatefulWidget {
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
+
+  final HomeDrawerState _drawerState = Get.put(HomeDrawerState());
 
   @override
   Widget build(BuildContext context) {
@@ -24,44 +36,56 @@ class _HomeDrawerState extends State<HomeDrawer> {
               const SizedBox(
                 height: 80,
               ),
-              _profile(context),
+              Image.asset(appLogo,height: 120,width: 130),
               const SizedBox(
                 height: 60,
               ),
               MenuTile(
                   onTap: () {
-                    // Get.to(() => const CookedScreen());
+                    ZoomDrawer.of(context)?.toggle();
                   },
                   title: 'News',
                   icon: Icons.newspaper_outlined),
               divider(context),
               MenuTile(
                   onTap: () {
-                   // Get.to(() => const CookedScreen());
+                    Share.share(
+                      'Click the link and get Global news app: ${_drawerState.appLink}',
+                    );
                   },
                   title: 'Share',
                   icon: Icons.share_outlined),
               divider(context),
               MenuTile(
                   onTap: () {
-                    // Get.to(() => const CookedScreen());
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true, // set to false if you want to force a rating
+                      builder: (context) => _dialog,
+                    );
                   },
                   title: 'Ratings',
                   icon: Icons.star_outline),
               divider(context),
               MenuTile(
-                  onTap: () {
-                    // Get.to(() => const CookedScreen());
+                  onTap: () async  {
+                    await FlutterMailer.send(MailOptions(
+                      body: 'Hi Global News Team,',
+                      subject: 'Feedback on Global News app',
+                      recipients: ['kafiulraja135@gmail.com'],
+                      isHTML: true,
+                      attachments: [ 'path/to/image.png', ],
+                    ));
                   },
                   title: 'Feedback',
                   icon: Icons.feedback_outlined),
-              divider(context),
-              MenuTile(
-                  onTap: () {
-                    // Get.to(() => const CookedScreen());
-                  },
-                  title: 'Help',
-                  icon: Icons.help_outline),
+              // divider(context),
+              // MenuTile(
+              //     onTap: () {
+              //
+              //     },
+              //     title: 'Help',
+              //     icon: Icons.help_outline),
             ],
           ),
         ),
@@ -79,8 +103,43 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
-  Widget _profile(BuildContext context) {
-    return Image.asset(appLogo,height: 120,width: 130);
-  }
+  final _dialog = RatingDialog(
+    initialRating: 1.0,
+    title: const Text(
+      'Global News',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 26.0,
+        color: black,
+        letterSpacing: 1.5,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    message: const Text(
+      'Tap a star to rate it on the Google Play Store.',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+        color: black,
+        letterSpacing: 1,
+      ),
+    ),
+    image: Image.asset(
+      appLogo,
+      height: 100,
+      width: 100,
+    ),
+    submitButtonText: 'Submit',
+    commentHint: 'Leave your comment here...',
+    onCancelled: () {},
+    onSubmitted: (response) async {
+      if (response.rating < 2.0) {
+        CustomSnack.warningSnack('You have to give more than two star!');
+      } else {
+        await StoreRedirect.redirect(androidAppId: "com.kafi.globalnews", iOSAppId: "com.kafi.globalnews");
+      }
+    },
+  );
 
 }
