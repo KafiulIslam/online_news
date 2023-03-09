@@ -9,13 +9,16 @@ import 'package:online_news_app/views/auth/login.dart';
 import 'package:online_news_app/views/home/home.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   var _userId = await secureStorage.read(key: 'user_id');
   runApp(MyApp(userId: _userId,));
+
 }
 
 class MyApp extends StatelessWidget {
+
   final String? userId;
   const MyApp({Key? key, this.userId}) : super(key: key);
 

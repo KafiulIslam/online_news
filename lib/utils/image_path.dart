@@ -1,5 +1,4 @@
 
-
 const business = 'assets/images/business.jpg';
 const entertainment = 'assets/images/entertainment.jpg';
 const generalNews = 'assets/images/general_news.jpg';

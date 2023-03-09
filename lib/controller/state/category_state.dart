@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../views/home/home_widget/menu_tile.dart';
 import '../../views/widgets/category_tile.dart';
 import '../../utils/image_path.dart';
 

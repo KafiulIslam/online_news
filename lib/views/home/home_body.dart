@@ -6,7 +6,6 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
 import '../../utils/color.dart';
 import '../../utils/constant_widget.dart';
 import '../../controller/state/article_state.dart';
@@ -39,12 +38,6 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   @override
-  void dispose() {
-    _articleStateController.pagingController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -72,22 +65,6 @@ class _HomeBodyState extends State<HomeBody> {
                 color: white,
               ))
         ],
-        //     actions: [
-        // GetBuilder<ArticleState>(builder: (_) {
-        // return TextButton(onPressed: (){
-        //         showCountryPicker(
-        //           context: context,
-        //           onSelect: (Country country) {
-        //             _articleStateController.changeLocation(country.countryCode);
-        //             _articleStateController.pagingController.refresh();
-        //           },
-        //         );
-        //       }, child: Text(
-        //         EmojiConverter.fromAlpha2CountryCode(
-        //             _articleStateController.searchController),
-        //         style: const TextStyle(fontSize: 25),
-        //       ));})
-        //     ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(

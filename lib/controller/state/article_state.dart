@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:online_news_app/views/widgets/custom_snack.dart';
 import '../../model/article_model.dart';
 import '../api/news_api.dart';
-import 'category_state.dart';
 
 class ArticleState extends GetxController{
-
 
   final TextEditingController controller = TextEditingController();
     String _searchController = 'us';
@@ -53,7 +52,7 @@ class ArticleState extends GetxController{
         pagingController.appendPage(relatedArticles, nextPageKey);
       }
     } catch (e) {
-      print("error --> $e");
+      CustomSnack.warningSnack(e.toString());
       pagingController.error = e;
     }
   }
