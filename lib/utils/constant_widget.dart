@@ -10,3 +10,8 @@ final appTitle = Text(
       textStyle: const TextStyle(
           color: white, fontSize: 20, fontWeight: FontWeight.w800)),
 );
+
+final inputFieldBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(10.0),
+  borderSide: const BorderSide(color: Colors.white54,),
+);

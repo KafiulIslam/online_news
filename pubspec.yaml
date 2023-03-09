@@ -48,6 +48,14 @@ dependencies:
   rating_dialog: ^2.0.4
   store_redirect: ^2.0.1
   flutter_mailer: ^2.0.1
+  flutter_form_builder: ^7.7.0
+  form_builder_validators: ^8.3.0
+  form_validator: ^1.0.2
+  firebase_auth: ^4.0.2
+  firebase_core: ^2.1.0
+  firebase_storage: ^11.0.2
+  cloud_firestore: ^4.0.2
+  glassmorphism: ^3.0.0
 
 
 dev_dependencies:

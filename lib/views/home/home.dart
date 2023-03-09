@@ -14,8 +14,8 @@ import 'package:online_news_app/views/home/home_body.dart';
 import 'package:online_news_app/views/home/home_drawer.dart';
 import 'package:online_news_app/views/news_details.dart';
 import 'package:online_news_app/views/widgets/blog_tile.dart';
-import '../../controller/constant/color.dart';
-import '../../controller/constant/constant_widget.dart';
+import '../../utils/color.dart';
+import '../../utils/constant_widget.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);

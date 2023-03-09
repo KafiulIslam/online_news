@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:online_news_app/controller/constant/image_path.dart';
-import 'package:online_news_app/controller/state/home_drawer_state.dart';
+import 'package:online_news_app/utils/image_path.dart';
 import 'package:online_news_app/views/widgets/custom_snack.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:store_redirect/store_redirect.dart';
-import '../../controller/constant/color.dart';
+import '../../utils/color.dart';
 import 'home_widget/menu_tile.dart';
 
 class HomeDrawer extends StatefulWidget {
@@ -21,7 +18,7 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
 
-  final HomeDrawerState _drawerState = Get.put(HomeDrawerState());
+  String appLink = 'https://play.google.com/store/apps/details?id=com.kafiul.bmi_meter&fbclid=IwAR0N1zDc-DWRqe1YlHCE9teStWSqQ6cGl7hiur__878xMnqGS7wtScEh0Ro';
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +47,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
               MenuTile(
                   onTap: () {
                     Share.share(
-                      'Click the link and get Global news app: ${_drawerState.appLink}',
+                      'Click the link and get Global news app: $appLink',
                     );
                   },
                   title: 'Share',

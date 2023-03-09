@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import '../../controller/constant/color.dart';
+import '../../utils/color.dart';
 
 class CustomSnack {
 

@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../controller/constant/color.dart';
-import '../../controller/constant/constant_widget.dart';
+import '../../utils/color.dart';
+import '../../utils/constant_widget.dart';
 import '../../controller/state/article_state.dart';
 import '../../controller/state/category_state.dart';
 import '../../model/article_model.dart';
@@ -133,6 +133,7 @@ class _HomeBodyState extends State<HomeBody> {
                             title: item.title,
                             imageUrl: item.urlToImage,
                             description: item.description,
+                            detailsUrl: item.url,
                           )),
                     ),
                   ),

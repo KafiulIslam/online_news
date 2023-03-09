@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../controller/constant/color.dart';
-import '../controller/constant/constant_widget.dart';
+import '../utils/color.dart';
+import '../utils/constant_widget.dart';
 
 
 class NewsDetails extends StatefulWidget {
