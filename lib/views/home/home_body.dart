@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:emoji_flag_converter/emoji_flag_converter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import '../../utils/constant_widget.dart';
 import '../../controller/state/article_state.dart';
 import '../../controller/state/category_state.dart';
 import '../../model/article_model.dart';
+import '../auth/login.dart';
 import '../news_details.dart';
 import '../widgets/blog_tile.dart';
 
@@ -60,7 +62,11 @@ class _HomeBodyState extends State<HomeBody> {
             )),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                await secureStorage.delete(key: 'user_id');
+                Get.off(()=> const LoginScreen());
+              },
               icon: const Icon(
                 Icons.logout,
                 color: white,

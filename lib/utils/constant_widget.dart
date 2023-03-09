@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'color.dart';
 
@@ -15,3 +16,5 @@ final inputFieldBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(10.0),
   borderSide: const BorderSide(color: Colors.white54,),
 );
+
+const secureStorage = FlutterSecureStorage();

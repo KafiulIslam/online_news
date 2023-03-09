@@ -42,7 +42,7 @@ class EmailInputField extends StatelessWidget {
             filled: true,
             fillColor: Colors.transparent,
             contentPadding: const EdgeInsets.all(16),
-            hintText: hintText,
+            hintText: 'globalnews@gmail.com',
             hintStyle: onBoardFourteenStyle,
             errorStyle: onBoardFourteenStyle,
             prefixIcon: const Icon(Icons.email_outlined,color: Colors.white54,),

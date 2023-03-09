@@ -53,9 +53,7 @@ dependencies:
   form_validator: ^1.0.2
   firebase_auth: ^4.2.10
   firebase_core: ^2.7.1
-  firebase_storage: ^11.0.2
-  cloud_firestore: ^4.0.2
-  glassmorphism: ^3.0.0
+  flutter_secure_storage: ^6.0.0
 
 
 dev_dependencies:

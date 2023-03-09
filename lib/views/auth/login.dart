@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:online_news_app/utils/color.dart';
 import 'package:online_news_app/utils/image_path.dart';
+import 'package:online_news_app/views/home/home.dart';
+import '../../utils/constant_widget.dart';
 import '../../utils/spacer.dart';
 import '../../utils/typography.dart';
 import '../widgets/component/buttons/onboard_button.dart';
@@ -28,20 +33,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            Image.asset(appLogo, height: 140,width: 160,),
-            SizedBox(height: MediaQuery.of(context).size.height / 20,),
-            onBoardCardIndex == 0
-                ? _loginCard(context)
-                : onBoardCardIndex == 1
-                ? _forgotPassCard(context)
-                : _createAccountCard(context),
-          ],),
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Image.asset(appLogo, height: 140,width: 160,),
+              SizedBox(height: MediaQuery.of(context).size.height / 20,),
+              onBoardCardIndex == 0
+                  ? _loginCard(context)
+                  : onBoardCardIndex == 1
+                  ? _forgotPassCard(context)
+                  : _createAccountCard(context),
+            ],),
+          ),
         ),
       ),
     );
@@ -67,21 +74,21 @@ class _LoginScreenState extends State<LoginScreen> {
         title: 'LogIn',
         onPressed: () async {
           try {
-            // if (_formKey.currentState?.saveAndValidate() ?? false) {
-            //   if (!_isLoading) {
-            //     setState(() {
-            //       _isLoading = true;
-            //     });
-            //     final authResult = await FirebaseAuth.instance
-            //         .signInWithEmailAndPassword(
-            //         email: _formKey.currentState?.value['login_mail'],
-            //         password: _formKey.currentState?.value['login_pass']);
-            //     // await secureStorage.write(
-            //     //     key: 'user_id', value: authResult.user?.uid);
-            //
-            //     Get.off(()=> const ChatScreen());
-            //   }
-            // }
+            if (_formKey.currentState?.saveAndValidate() ?? false) {
+              if (!_isLoading) {
+                setState(() {
+                  _isLoading = true;
+                });
+                final authResult = await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                    email: _formKey.currentState?.value['login_mail'],
+                    password: _formKey.currentState?.value['login_pass']);
+                await secureStorage.write(
+                    key: 'user_id', value: authResult.user?.uid);
+
+                Get.off(()=> const Home());
+              }
+            }
           } catch (e) {
             _formKey.currentState?.reset();
             CustomSnack.warningSnack(e.toString());
@@ -139,15 +146,18 @@ class _LoginScreenState extends State<LoginScreen> {
       OnBoardTextButton(
         title: 'Submit',
         onPressed: () async {
-          // await FirebaseAuth.instance
-          //     .sendPasswordResetEmail(
-          //     email: _formKey.currentState?.value['reset_pass_email'])
-          //     .then((value) {
-          //   CustomSnack.successSnack(
-          //       'Check your mail"${_formKey.currentState?.value['reset_pass_email']}" and reset your password.');
-          // }).onError((error, stackTrace) {
-          //   CustomSnack.warningSnack(error.toString());
-          // });
+          await FirebaseAuth.instance
+              .sendPasswordResetEmail(
+              email: _formKey.currentState?.value['reset_pass_email'])
+              .then((value) {
+            CustomSnack.successSnack(
+                'Check your mail"${_formKey.currentState?.value['reset_pass_email']}" and reset your password.');
+            setState(() {
+              onBoardCardIndex = 0;
+            });
+          }).onError((error, stackTrace) {
+            CustomSnack.warningSnack(error.toString());
+          });
         },
         isLoading: _isLoading,
       ),
@@ -197,34 +207,34 @@ class _LoginScreenState extends State<LoginScreen> {
       OnBoardTextButton(
         title: 'Sign Up',
         onPressed: () async {
-          // var userId = await secureStorage.read(key: 'user_id');
-          // if (userId == null) {
-          //   try {
-          //     setState(() {
-          //       _isLoading = true;
-          //     });
-          //     final authResult = await FirebaseAuth.instance
-          //         .createUserWithEmailAndPassword(
-          //         email: _formKey.currentState?.value['signup_mail'],
-          //         password: _formKey.currentState?.value['signup_pass']);
-          //     await secureStorage.write(
-          //         key: 'user_id', value: authResult.user?.uid);
-          //     var userId = await secureStorage.read(key: 'user_id');
-          //
-          //     Get.off(()=> const ChatScreen());
-          //
-          //   } catch (e) {
-          //     CustomSnack.warningSnack(e.toString(), context);
-          //   } finally {
-          //     setState(() {
-          //       _isLoading = false;
-          //     });
-          //   }
-          // } else {
-          //   CustomSnack.warningSnack(
-          //       "Warning!','You are logged in, to create new account log out first.",
-          //       context);
-          // }
+
+          var userId = await secureStorage.read(key: 'user_id');
+          if (userId == null) {
+            try {
+              setState(() {
+                _isLoading = true;
+              });
+              final authResult = await FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                  email: _formKey.currentState?.value['signup_mail'],
+                  password: _formKey.currentState?.value['signup_pass']);
+              await secureStorage.write(
+                  key: 'user_id', value: authResult.user?.uid);
+              var userId = await secureStorage.read(key: 'user_id');
+
+              Get.off(()=> const Home());
+
+            } catch (e) {
+              CustomSnack.warningSnack(e.toString());
+            } finally {
+              setState(() {
+                _isLoading = false;
+              });
+            }
+          } else {
+            CustomSnack.warningSnack(
+                "Warning!','You are logged in, to create new account log out first.");
+          }
         },
         isLoading: _isLoading,
       )
