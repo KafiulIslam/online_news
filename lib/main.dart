@@ -1,8 +1,10 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:online_news_app/utils/color.dart';
 import 'package:online_news_app/utils/constant_widget.dart';
+import 'package:online_news_app/utils/image_path.dart';
 import 'package:online_news_app/views/auth/login.dart';
 import 'package:online_news_app/views/home/home.dart';
 
@@ -27,7 +29,12 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: scaffoldColor,
         useMaterial3: true,
       ),
-      home: userId == null ? const LoginScreen() : const Home(),
+      home: AnimatedSplashScreen(
+          duration: 1000,
+          splash: appLogo,
+          nextScreen: userId == null ? const LoginScreen() : const Home(),
+          splashTransition: SplashTransition.scaleTransition,
+          backgroundColor: Colors.white),
     );
   }
 }
