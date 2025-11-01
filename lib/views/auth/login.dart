@@ -83,8 +83,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     .signInWithEmailAndPassword(
                     email: _formKey.currentState?.value['login_mail'],
                     password: _formKey.currentState?.value['login_pass']);
-                await secureStorage.write(
-                    key: 'user_id', value: authResult.user?.uid);
 
                 Get.off(()=> const Home());
               }
@@ -208,8 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
         title: 'Sign Up',
         onPressed: () async {
 
-          var userId = await secureStorage.read(key: 'user_id');
-          if (userId == null) {
+
             try {
               setState(() {
                 _isLoading = true;
@@ -218,9 +215,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   .createUserWithEmailAndPassword(
                   email: _formKey.currentState?.value['signup_mail'],
                   password: _formKey.currentState?.value['signup_pass']);
-              await secureStorage.write(
-                  key: 'user_id', value: authResult.user?.uid);
-              var userId = await secureStorage.read(key: 'user_id');
 
               Get.off(()=> const Home());
 
@@ -231,10 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 _isLoading = false;
               });
             }
-          } else {
-            CustomSnack.warningSnack(
-                "Warning!','You are logged in, to create new account log out first.");
-          }
+
         },
         isLoading: _isLoading,
       )

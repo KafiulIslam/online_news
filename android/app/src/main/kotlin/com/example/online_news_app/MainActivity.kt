@@ -1,4 +1,4 @@
-package com.example.online_news_app
+package com.kafi.globalnews
 
 import io.flutter.embedding.android.FlutterActivity
 

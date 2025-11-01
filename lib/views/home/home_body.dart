@@ -30,10 +30,6 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   void initState() {
-    _articleStateController.pagingController.addPageRequestListener((pageKey) {
-      _articleStateController.fetchPage(
-          pageKey, _categoryStateController.categoryName);
-    });
     super.initState();
   }
 
@@ -57,7 +53,6 @@ class _HomeBodyState extends State<HomeBody> {
           IconButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                await secureStorage.delete(key: 'user_id');
                 Get.off(()=> const LoginScreen());
               },
               icon: const Icon(
@@ -85,6 +80,8 @@ class _HomeBodyState extends State<HomeBody> {
                         return GestureDetector(
                             onTap: () {
                               _categoryStateController.changeCategory(index);
+                              _articleStateController.fetchPage(
+                                  1, _categoryStateController.categoryName);
                               _articleStateController.pagingController
                                   .refresh();
                             },
@@ -95,14 +92,14 @@ class _HomeBodyState extends State<HomeBody> {
               }),
               verticalSpacer,
               GetBuilder<ArticleState>(builder: (_) {
-                return Container(
+                final controller = _articleStateController.pagingController;
+                return SizedBox(
                   height: MediaQuery.of(context).size.height - 100,
                   child: RefreshIndicator(
-                    onRefresh: () => Future.sync(() =>
-                        _articleStateController.pagingController.refresh()),
+                    onRefresh: () => Future.sync(() => controller.refresh()),
                     child: PagedListView<int, ArticleModel>.separated(
-                      pagingController:
-                      _articleStateController.pagingController,
+                      state: controller.value,
+                      fetchNextPage: controller.fetchNextPage,
                       separatorBuilder: (context, index) => const SizedBox(
                         height: 32,
                       ),

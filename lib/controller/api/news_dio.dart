@@ -32,22 +32,19 @@ Map<String, dynamic> getConnectionErrorResponse() {
 }
 
 Map<String, dynamic> getServerErrorResponse(e) {
-  return {
-    'status': 'fail',
-    'data': jsonDecode(e.response.toString())
-  };
+  return {'status': 'fail', 'data': jsonDecode(e.response.toString())};
 }
 
 Map<String, dynamic> getErrorResponse(e) {
-  if (e.type == DioErrorType.response) {
+  if (e.type == DioExceptionType.badResponse) {
     return getServerErrorResponse(e);
   }
 
-  if (e.type == DioErrorType.connectTimeout) {
+  if (e.type == DioExceptionType.connectionTimeout) {
     return getConnectionErrorResponse();
   }
 
-  if (e.type == DioErrorType.receiveTimeout) {
+  if (e.type == DioExceptionType.receiveTimeout) {
     return getTimeoutResponse();
   }
 
