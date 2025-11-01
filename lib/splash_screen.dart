@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
   void _checkUserLogin() {
     final User? user = FirebaseAuth.instance.currentUser;
 
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 1), () {
       if (user != null) {
         Navigator.pushReplacement(
           context,
@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen>
     });
     return Scaffold(
       body: Center(
-        child: Image.asset(appLogo),
+        child: Image.asset(appLogo, width: MediaQuery.sizeOf(context).width / 1.5,),
       ),
     );
   }

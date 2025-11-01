@@ -13,6 +13,6 @@ final appTitle = Text(
 
 final inputFieldBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(10.0),
-  borderSide: const BorderSide(color: Colors.white54,),
+  borderSide: const BorderSide(color: Colors.black,),
 );
 

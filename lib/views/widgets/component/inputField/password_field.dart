@@ -51,7 +51,7 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
             hintText: widget.hintText,
             hintStyle: widget.isSignUpForm == true ? fourteenDeepAssStyle : onBoardFourteenStyle,
             errorStyle: widget.isSignUpForm == true ? fourteenRedStyle : onBoardFourteenStyle,
-            prefixIcon: Icon(Icons.lock,color: widget.isSignUpForm == true ? iconColor : Colors.white54),
+            prefixIcon: Icon(Icons.lock,color: widget.isSignUpForm == true ? iconColor : Colors.black),
             suffixIcon: GestureDetector(
               onTap: () {
                 setState(() {
@@ -66,8 +66,8 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
                     child: _isPassObscure
-                        ? Icon(Icons.visibility_off,color: widget.isSignUpForm == true ? iconColor : Colors.white54,)
-                        : Icon(Icons.visibility,color: widget.isSignUpForm == true ? iconColor :Colors.white54,)),
+                        ? Icon(Icons.visibility_off,color: widget.isSignUpForm == true ? iconColor : Colors.black,)
+                        : Icon(Icons.visibility,color: widget.isSignUpForm == true ? iconColor :Colors.black,)),
               ),
             ),
             focusedBorder: widget.isSignUpForm == true ? OutlineInputBorder(

@@ -6,14 +6,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:online_news_app/utils/color.dart';
 import 'package:online_news_app/utils/image_path.dart';
 import 'package:online_news_app/views/home/home.dart';
-import '../../utils/constant_widget.dart';
 import '../../utils/spacer.dart';
 import '../../utils/typography.dart';
 import '../widgets/component/buttons/onboard_button.dart';
 import '../widgets/component/inputField/email_input_field.dart';
 import '../widgets/component/inputField/password_field.dart';
 import '../widgets/custom_snack.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -25,7 +23,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final _formKey = GlobalKey<FormBuilderState>();
   late bool _isLoading = false;
   late String accessKey = '';
@@ -33,21 +30,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              Image.asset(appLogo, height: 140,width: 160,),
-              SizedBox(height: MediaQuery.of(context).size.height / 20,),
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                appLogo,
+                height: 140,
+                width: 160,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 20,
+              ),
               onBoardCardIndex == 0
                   ? _loginCard(context)
                   : onBoardCardIndex == 1
-                  ? _forgotPassCard(context)
-                  : _createAccountCard(context),
-            ],),
+                      ? _forgotPassCard(context)
+                      : _createAccountCard(context),
+            ],
           ),
         ),
       ),
@@ -81,10 +83,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 });
                 final authResult = await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
-                    email: _formKey.currentState?.value['login_mail'],
-                    password: _formKey.currentState?.value['login_pass']);
+                        email: _formKey.currentState?.value['login_mail'],
+                        password: _formKey.currentState?.value['login_pass']);
 
-                Get.off(()=> const Home());
+                Get.off(() => const Home());
               }
             }
           } catch (e) {
@@ -146,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: () async {
           await FirebaseAuth.instance
               .sendPasswordResetEmail(
-              email: _formKey.currentState?.value['reset_pass_email'])
+                  email: _formKey.currentState?.value['reset_pass_email'])
               .then((value) {
             CustomSnack.successSnack(
                 'Check your mail"${_formKey.currentState?.value['reset_pass_email']}" and reset your password.');
@@ -191,12 +193,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
-                  color: Colors.white70,
+                  color: Colors.black,
                   letterSpacing: 1,
                   decoration: TextDecoration.underline,
                 ),
               )),
-          Container(
+          const SizedBox(
             height: 5,
             width: 5,
           ),
@@ -205,27 +207,23 @@ class _LoginScreenState extends State<LoginScreen> {
       OnBoardTextButton(
         title: 'Sign Up',
         onPressed: () async {
+          try {
+            setState(() {
+              _isLoading = true;
+            });
+            final authResult = await FirebaseAuth.instance
+                .createUserWithEmailAndPassword(
+                    email: _formKey.currentState?.value['signup_mail'],
+                    password: _formKey.currentState?.value['signup_pass']);
 
-
-            try {
-              setState(() {
-                _isLoading = true;
-              });
-              final authResult = await FirebaseAuth.instance
-                  .createUserWithEmailAndPassword(
-                  email: _formKey.currentState?.value['signup_mail'],
-                  password: _formKey.currentState?.value['signup_pass']);
-
-              Get.off(()=> const Home());
-
-            } catch (e) {
-              CustomSnack.warningSnack(e.toString());
-            } finally {
-              setState(() {
-                _isLoading = false;
-              });
-            }
-
+            Get.off(() => const Home());
+          } catch (e) {
+            CustomSnack.warningSnack(e.toString());
+          } finally {
+            setState(() {
+              _isLoading = false;
+            });
+          }
         },
         isLoading: _isLoading,
       )
@@ -262,62 +260,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _onBoardCard(BuildContext context, List<Widget> children) {
     return FormBuilder(
-      key: _formKey,
-      enabled: !_isLoading,
-      autovalidateMode: AutovalidateMode.disabled,
-      onChanged: () {
-        _formKey.currentState!.save();
-      },
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width / 1.1,
-        height: 360,
-        child: Card( shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),color: black, child:  Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: children,
+        key: _formKey,
+        enabled: !_isLoading,
+        autovalidateMode: AutovalidateMode.disabled,
+        onChanged: () {
+          _formKey.currentState!.save();
+        },
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width / 1.1,
+         // height: 360,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: children,
+              ),
             ),
           ),
-         ),),
-      )
-      // GlassmorphicContainer(
-      //   width: MediaQuery.of(context).size.width / 1.1,
-      //   height: 360,
-      //   borderRadius: 20,
-      //   blur: 50,
-      //   alignment: Alignment.bottomCenter,
-      //   border: 2,
-      //   linearGradient: LinearGradient(
-      //       begin: Alignment.topCenter,
-      //       end: Alignment.bottomCenter,
-      //       colors: [
-      //         const Color(0xFFffffff).withOpacity(0.15),
-      //         const Color(0xFFFFFFFF).withOpacity(0.1),
-      //       ],
-      //       stops: const [
-      //         0.1,
-      //         1,
-      //       ]),
-      //   borderGradient: LinearGradient(
-      //     begin: Alignment.topCenter,
-      //     end: Alignment.bottomCenter,
-      //     colors: [
-      //       trans,
-      //       Colors.white.withOpacity(0.2),
-      //     ],
-      //   ),
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(16.0),
-      //     child: SingleChildScrollView(
-      //       child: Column(
-      //         children: children,
-      //       ),
-      //     ),
-      //   ),
-      // ),
-    );
+        )
+        );
   }
 
 }

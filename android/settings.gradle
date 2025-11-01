@@ -1,5 +1,3 @@
-// android/settings.gradle
-
 pluginManagement {
     repositories {
         google()
@@ -7,6 +5,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 
+    // Read Flutter SDK path from local.properties and include Flutter's Gradle build
     def localPropertiesFile = new File(rootDir, "local.properties")
     def properties = new Properties()
     assert localPropertiesFile.exists()
@@ -16,23 +15,12 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 }
 
+// Declare plugin versions here (no buildscript/classpath elsewhere)
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
     id "com.android.application" version "8.6.1" apply false
-    id "org.jetbrains.kotlin.android" version "2.0.21" apply false // safer with AGP 8.6.x
-    id "com.google.gms.google-services" version "4.4.1" apply false
-}
-
-dependencyResolutionManagement {
-    // keep this line if you want settings.gradle to own repos
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-
-    repositories {
-        google()
-        mavenCentral()
-        // IMPORTANT: Flutter engine artifacts
-        maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
-    }
+    id "org.jetbrains.kotlin.android" version "2.0.21" apply false
+    id "com.google.gms.google-services" version "4.4.2" apply false
 }
 
 include(":app")

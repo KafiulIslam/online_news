@@ -92,13 +92,13 @@ const rowInfoTextStyle = TextStyle(
 const onBoardSixteenStyle = TextStyle(
   fontWeight: FontWeight.w600,
   fontSize: 16,
-  color: Colors.white70,
+  color: Colors.black,
   letterSpacing: 1,
 );
 
 const onBoardFourteenStyle = TextStyle(
   fontWeight: FontWeight.w600,
   fontSize: 14,
-  color: Colors.white54,
+  color: Colors.black,
   letterSpacing: 1,
 );
