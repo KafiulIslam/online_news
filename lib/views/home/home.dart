@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:online_news_app/views/home/home_body.dart';
 import 'package:online_news_app/views/home/home_drawer.dart';

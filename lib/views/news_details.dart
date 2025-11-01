@@ -58,22 +58,6 @@ class _NewsDetailsState extends State<NewsDetails> {
                 setState(() {
                   _isLoading = false;
                 });
-                // _webViewController.runJavascript(
-                //     "document.getElementsByTagName('header')[0].style.display='none'");
-                // _webViewController.runJavascript(
-                //     "document.getElementsByTagName('footer')[0].style.display='none'");
-                // _webViewController
-                //     .runJavascript(
-                //     ("javascript:(function() { " +
-                //         "var head = document.getElementsByTagName('header')[0];" +
-                //         "head.parentNode.removeChild(head);" +
-                //         "var footer = document.getElementsByTagName('footer')[0];" +
-                //         "footer.parentNode.removeChild(footer);" +
-                //         "})()")
-                //      // "document.getElementsByTagName('header')[0].style.display='none'"
-                // ).then((value) =>
-                //     debugPrint('header is deleting'))
-                //     .catchError((onError) => debugPrint('$onError'));
               },
               onPageFinished: (String url) {},
             ),
