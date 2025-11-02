@@ -42,16 +42,36 @@ class _HomeBodyState extends State<HomeBody> {
               icon: const Icon(Icons.menu, color: white),
             ),
             actions: [
-              IconButton(
-                onPressed: () async {
-
+              InkWell(
+                onTap: () {
+                  showCountryPicker(
+                    context: context,
+                    onSelect: (Country country) {
+                      _articleStateController
+                          .changeLocation(country.countryCode);
+                    },
+                  );
                 },
-                icon: const Icon(Icons.filter_alt_outlined, color: white),
-              )
+                child: Container(
+                  height: 36,
+                  width: 36,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white),
+                  child: Center(
+                    child: Text(
+                      EmojiConverter.fromAlpha2CountryCode(
+                        _articleStateController.searchController,
+                      ),
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
+              ), const SizedBox(width: 16,)
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 64),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 // Categories
@@ -134,24 +154,6 @@ class _HomeBodyState extends State<HomeBody> {
                   ),
                 ),
               ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: white,
-            elevation: 8.0,
-            onPressed: () {
-              showCountryPicker(
-                context: context,
-                onSelect: (Country country) {
-                  _articleStateController.changeLocation(country.countryCode);
-                },
-              );
-            },
-            child: Text(
-              EmojiConverter.fromAlpha2CountryCode(
-                _articleStateController.searchController,
-              ),
-              style: const TextStyle(fontSize: 25),
             ),
           ),
         );
