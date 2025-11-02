@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:online_news_app/utils/typography.dart';
 import '../../controller/state/article_state.dart';
 import '../../controller/state/category_state.dart';
 import '../../model/article_model.dart';
@@ -40,7 +41,7 @@ class _HomeBodyState extends State<HomeBody> {
             title: appTitle,
             leading: IconButton(
               onPressed: () => ZoomDrawer.of(context)?.toggle(),
-              icon: Icon(Icons.menu, color: white),
+              icon: const Icon(Icons.menu, color: white),
             ),
             actions: [
               IconButton(
@@ -88,8 +89,10 @@ class _HomeBodyState extends State<HomeBody> {
                         child: PagedListView<int, ArticleModel>.separated(
                           state: state,
                           fetchNextPage: paging.fetchNextPage,
-                          separatorBuilder: (_, __) => const SizedBox(height: 32),
-                          builderDelegate: PagedChildBuilderDelegate<ArticleModel>(
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 32),
+                          builderDelegate:
+                              PagedChildBuilderDelegate<ArticleModel>(
                             itemBuilder: (context, item, index) => BlogTile(
                               onTap: () {
                                 Get.to(() => NewsDetails(newsUrl: item.url!));
@@ -101,13 +104,32 @@ class _HomeBodyState extends State<HomeBody> {
                             ),
                             // Optional custom indicators:
                             firstPageProgressIndicatorBuilder: (_) =>
-                                const Center(child: CircularProgressIndicator()),
+                                const Center(
+                                    child: CircularProgressIndicator()),
                             newPageProgressIndicatorBuilder: (_) =>
-                                const Center(child: CircularProgressIndicator()),
+                                const Center(
+                                    child: CircularProgressIndicator()),
                             firstPageErrorIndicatorBuilder: (_) =>
                                 const Center(child: Text('Failed to load')),
-                            noItemsFoundIndicatorBuilder: (_) =>
-                                const Center(child: Text('No articles')),
+                            noItemsFoundIndicatorBuilder: (_) => const Center(
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.newspaper_outlined,
+                                  color: iconColor,
+                                  size: 120,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  'No available articles!',
+                                  style: sixteenBlackStyle,
+                                )
+                              ],
+                            )),
                           ),
                         ),
                       );
